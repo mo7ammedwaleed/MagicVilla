@@ -9,24 +9,25 @@ namespace MagicVilla_Web.Services
     public class BaseService : IBaseService
     {
         public APIResponse ResponseModel { get; set; }
-        private readonly IHttpClientFactory _httpClientFactory;
-        public BaseService(IHttpClientFactory httpClientFactory)
+        public IHttpClientFactory _httpClient { get; set; }
+
+        public BaseService(IHttpClientFactory httpClient)
         {
             this.ResponseModel = new();
-            _httpClientFactory = httpClientFactory;
+            _httpClient = httpClient;
         }
-
         public async Task<T> SendAsync<T>(APIRequest apiRequest)
         {
             try
             {
-                var client = _httpClientFactory.CreateClient("MagicVillaAPI");
+                var client = _httpClient.CreateClient("MagicVillaAPI");
                 HttpRequestMessage message = new HttpRequestMessage();
-                message.Headers.Add("Accept", "aplication/json");
+                message.Headers.Add("Accept", "application/json");
                 message.RequestUri = new Uri(apiRequest.Url);
-                if(apiRequest.Data != null)
+                if (apiRequest.Data != null)
                 {
-                    message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data), Encoding.UTF8, "application/json");
+                    message.Content = new StringContent(JsonConvert.SerializeObject(apiRequest.Data),
+                        Encoding.UTF8, "application/json");
                 }
                 switch (apiRequest.ApiType)
                 {
@@ -42,27 +43,28 @@ namespace MagicVilla_Web.Services
                     default:
                         message.Method = HttpMethod.Get;
                         break;
+
                 }
+
                 HttpResponseMessage apiResponse = null;
+
                 apiResponse = await client.SendAsync(message);
 
                 var apiContent = await apiResponse.Content.ReadAsStringAsync();
                 var APIResponse = JsonConvert.DeserializeObject<T>(apiContent);
-
                 return APIResponse;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                var dto = new APIResponse()
+                var dto = new APIResponse
                 {
-                    IsSuccess = false,
-                    ErrorMessages = new List<string>() { Convert.ToString(ex.Message) }
+                    ErrorMessages = new List<string> { Convert.ToString(ex.Message) },
+                    IsSuccess = false
                 };
                 var res = JsonConvert.SerializeObject(dto);
-                var apiResponse = JsonConvert.DeserializeObject<T>(res);
-                return apiResponse;
+                var APIResponse = JsonConvert.DeserializeObject<T>(res);
+                return APIResponse;
             }
-
         }
     }
 }
