@@ -77,5 +77,28 @@ namespace MagicVilla_Web.Controllers
             return View(updateDTO);
         }
 
+        [HttpGet]
+        public async Task<IActionResult> DeleteVilla(int villaId)
+        {
+            var response = await _villaService.GetAsync<APIResponse>(villaId);
+            if (response != null && response.IsSuccess)
+            {
+                VillaDTO villaDTO = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(response.Result));
+                return View(villaDTO);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteVilla(VillaDTO villaDTO)
+        {
+                var response = await _villaService.DeleteAsync<APIResponse>(villaDTO.Id);
+                if (response != null && response.IsSuccess)
+                {
+                    return RedirectToAction(nameof(IndexVilla));
+                }
+            return View(villaDTO);
+        }
+
     }
 }
