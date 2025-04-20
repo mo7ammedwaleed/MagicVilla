@@ -75,6 +75,40 @@ namespace MagicVilla_VillaAPI.Data
                   Amenity = "",
                   CreatedDate = DateTime.Now
               });
+
+            modelBuilder.Entity<VillaNumber>().HasData(
+                new VillaNumber
+                {
+                    VillaNo = 101,
+                    VillaID = 1,
+                    SpecialDetails = "Special Details",
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
+                },
+                new VillaNumber
+                {
+                    VillaNo = 102,
+                    VillaID = 1,
+                    SpecialDetails = "Special Details",
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
+                },
+                new VillaNumber
+                {
+                    VillaNo = 103,
+                    VillaID = 2,
+                    SpecialDetails = "Special Details",
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
+                },
+                new VillaNumber
+                {
+                    VillaNo = 104,
+                    VillaID = 2,
+                    SpecialDetails = "Special Details",
+                    CreatedDate = DateTime.Now,
+                    UpdatedDate = DateTime.Now
+                });
         }
     }
 }
