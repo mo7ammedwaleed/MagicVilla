@@ -49,5 +49,20 @@ namespace MagicVilla_Web.Controllers
             }
             return View(createVM);
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> CreateVillaNumber(VillaNumberCreateVM createVM)
+        {
+            if (ModelState.IsValid)
+            {
+                var response = await _villaNumberService.CreateAsync<APIResponse>(createVM.VillaNumber);
+                if (response != null && response.IsSuccess)
+                {
+                    TempData["success"] = "Villa created successfully";
+                    return RedirectToAction(nameof(IndexVillaNumber));
+                }
+            }
+            return View(createVM);
+        }
     }
 }
