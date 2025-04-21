@@ -56,10 +56,17 @@ namespace MagicVilla_Web.Controllers
             if (ModelState.IsValid)
             {
                 var response = await _villaNumberService.CreateAsync<APIResponse>(createVM.VillaNumber);
-                if (response != null && response.IsSuccess && response.ErrorMessages.Count == 0)
+                if (response != null && response.IsSuccess)
                 {
                     TempData["success"] = "Villa created successfully";
                     return RedirectToAction(nameof(IndexVillaNumber));
+                }
+                else
+                {
+                    if (response.ErrorMessages.Count > 0)
+                    {
+                        ModelState.AddModelError("ErrorMessages",response.ErrorMessages.FirstOrDefault());
+                    }
                 }
             }
             var resp = await _villaService.GetAllAsync<APIResponse>();
