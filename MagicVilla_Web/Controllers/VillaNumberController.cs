@@ -141,5 +141,41 @@ namespace MagicVilla_Web.Controllers
 
             return View(updateVM);
         }
+
+        [HttpGet]
+        public async Task<IActionResult> DeleteVillaNumber(int villaNo)
+        {
+            VillaNumberDeleteVM villaNumberUpdateVM = new();
+            var response = await _villaNumberService.GetAsync<APIResponse>(villaNo);
+            if (response != null && response.IsSuccess)
+            {
+                VillaNumberDTO villaDTO = JsonConvert.DeserializeObject<VillaNumberDTO>(Convert.ToString(response.Result));
+                villaNumberUpdateVM.VillaNumber = _mapper.Map<VillaNumberDTO>(villaDTO);
+            }
+
+            response = await _villaService.GetAllAsync<APIResponse>();
+            if (response != null && response.IsSuccess)
+            {
+                villaNumberUpdateVM.VillaList = JsonConvert.DeserializeObject<List<VillaDTO>>(Convert.ToString(response.Result))
+                    .Select(i => new SelectListItem
+                    {
+                        Text = i.Name,
+                        Value = i.Id.ToString()
+                    }).ToList();
+                return View(villaNumberUpdateVM);
+            }
+            return NotFound();
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteVillaNumber(VillaNumberDeleteVM villaNumberNumberVM)
+        {
+            var response = await _villaNumberService.DeleteAsync<APIResponse>(villaNumberNumberVM.VillaNumber.VillaNo);
+            if (response != null && response.IsSuccess)
+            {
+                return RedirectToAction(nameof(IndexVillaNumber));
+            }
+            return View(villaNumberNumberVM);
+        }
     }
 }
