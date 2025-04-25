@@ -47,6 +47,7 @@ namespace MagicVilla_Web.Controllers
                     return RedirectToAction(nameof(IndexVilla));
                 }
             }
+            TempData["error"] = "Error encountered";
             return View(createDTO);
         }
 
@@ -74,6 +75,7 @@ namespace MagicVilla_Web.Controllers
                     return RedirectToAction(nameof(IndexVilla));
                 }
             }
+            TempData["error"] = "Error encountered";
             return View(updateDTO);
         }
 
@@ -86,17 +88,20 @@ namespace MagicVilla_Web.Controllers
                 VillaDTO villaDTO = JsonConvert.DeserializeObject<VillaDTO>(Convert.ToString(response.Result));
                 return View(villaDTO);
             }
+            TempData["error"] = "Error encountered";
             return NotFound();
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteVilla(VillaDTO villaDTO)
         {
-                var response = await _villaService.DeleteAsync<APIResponse>(villaDTO.Id);
-                if (response != null && response.IsSuccess)
-                {
-                    return RedirectToAction(nameof(IndexVilla));
-                }
+            var response = await _villaService.DeleteAsync<APIResponse>(villaDTO.Id);
+            if (response != null && response.IsSuccess)
+            {
+                TempData["success"] = "Villa deleted successfully";
+                return RedirectToAction(nameof(IndexVilla));
+            }
+            TempData["error"] = "Error encountered";
             return View(villaDTO);
         }
 

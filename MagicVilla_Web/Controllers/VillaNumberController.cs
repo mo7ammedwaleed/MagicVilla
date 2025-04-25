@@ -80,7 +80,7 @@ namespace MagicVilla_Web.Controllers
                         Value = i.Id.ToString()
                     }).ToList();
             }
-
+            TempData["error"] = "Error encountered";
             return View(createVM);
         }
 
@@ -106,6 +106,7 @@ namespace MagicVilla_Web.Controllers
                     }).ToList();
                 return View(villaNumberUpdateVM);
             }
+            TempData["error"] = "Error encountered";
             return NotFound();
         }
         [HttpPost]
@@ -138,7 +139,7 @@ namespace MagicVilla_Web.Controllers
                         Value = i.Id.ToString()
                     }).ToList();
             }
-
+            TempData["error"] = "Error encountered";
             return View(updateVM);
         }
 
@@ -164,6 +165,7 @@ namespace MagicVilla_Web.Controllers
                     }).ToList();
                 return View(villaNumberUpdateVM);
             }
+            TempData["error"] = "Error encountered";
             return NotFound();
         }
         [HttpPost]
@@ -173,8 +175,10 @@ namespace MagicVilla_Web.Controllers
             var response = await _villaNumberService.DeleteAsync<APIResponse>(villaNumberNumberVM.VillaNumber.VillaNo);
             if (response != null && response.IsSuccess)
             {
+                TempData["success"] = "Villa deleted successfully";
                 return RedirectToAction(nameof(IndexVillaNumber));
             }
+            TempData["error"] = "Error encountered";
             return View(villaNumberNumberVM);
         }
     }
