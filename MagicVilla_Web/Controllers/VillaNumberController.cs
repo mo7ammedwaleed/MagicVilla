@@ -5,6 +5,7 @@ using MagicVilla_Web.Models.Dto;
 using MagicVilla_Web.Models.Dto.VM;
 using MagicVilla_Web.Services;
 using MagicVilla_Web.Services.IServices;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -35,6 +36,7 @@ namespace MagicVilla_Web.Controllers
             return View(list);
         }
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> CreateVillaNumber()
         {
             VillaNumberCreateVM createVM = new();
@@ -52,6 +54,7 @@ namespace MagicVilla_Web.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> CreateVillaNumber(VillaNumberCreateVM createVM)
         {
             if (ModelState.IsValid)
@@ -85,6 +88,7 @@ namespace MagicVilla_Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateVillaNumber(int villaNo)
         {
             VillaNumberUpdateVM villaNumberUpdateVM = new();
@@ -111,6 +115,7 @@ namespace MagicVilla_Web.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> UpdateVillaNumber(VillaNumberUpdateVM updateVM)
         {
             if (ModelState.IsValid)
@@ -144,6 +149,7 @@ namespace MagicVilla_Web.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteVillaNumber(int villaNo)
         {
             VillaNumberDeleteVM villaNumberUpdateVM = new();
@@ -170,6 +176,7 @@ namespace MagicVilla_Web.Controllers
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize(Roles = "admin")]
         public async Task<IActionResult> DeleteVillaNumber(VillaNumberDeleteVM villaNumberNumberVM)
         {
             var response = await _villaNumberService.DeleteAsync<APIResponse>(villaNumberNumberVM.VillaNumber.VillaNo);

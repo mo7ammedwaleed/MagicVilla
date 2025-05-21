@@ -34,38 +34,42 @@
 						</li>
 
 						@if (HttpContextAccessor.HttpContext.Session.GetString(SD.SessionToken) != null &&
-													HttpContextAccessor.HttpContext.Session.GetString(SD.SessionToken).ToString().Length > 0)
+												HttpContextAccessor.HttpContext.Session.GetString(SD.SessionToken).ToString().Length > 0)
 						{
 							<li class="nav-item">
 								<a class="nav-link text-dark" asp-controller="Auth" asp-action="Logout">Logout</a>
 							</li>
 						}
-						<li class="nav-item">
+						else
+						{
+							<li class="nav-item">
 								<a class="nav-link text-dark" asp-controller="Auth" asp-action="Login">Login</a>
 							</li>
 							<li class="nav-item">
 								<a class="nav-link text-dark" asp-controller="Auth" asp-action="Register">Register</a>
 							</li>
-						</ul>
-					</div>
-				</div>
-			</nav>
-		</header>
-		<div class="">
-			<main role="main" class="pb-3">
-				@RenderBody()
-			</main>
-		</div>
+						}
 
-		<footer class="footer text-muted">
-			<div class="container">
-				&copy; 2025 - MagicVilla_Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+					</ul>
+				</div>
 			</div>
-		</footer>
-		<script src="~/lib/jquery/dist/jquery.min.js"></script>
-		<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-		<script src="~/js/site.js" asp-append-version="true"></script>
-		@await RenderSectionAsync("Scripts", required: false)
-	</body>
-	</html>
+		</nav>
+	</header>
+	<div class="">
+		<main role="main" class="pb-3">
+			@RenderBody()
+		</main>
+	</div>
+
+	<footer class="footer text-muted">
+		<div class="container">
+			&copy; 2025 - MagicVilla_Web - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+		</div>
+	</footer>
+	<script src="~/lib/jquery/dist/jquery.min.js"></script>
+	<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+	<script src="~/js/site.js" asp-append-version="true"></script>
+	@await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
