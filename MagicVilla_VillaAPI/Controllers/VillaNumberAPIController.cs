@@ -10,9 +10,10 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace MagicVilla_VillaAPI.Controllers
 {
-    [Route("api/VillaNumberAPI")]
+    [Route("api/v{version:apiVersion}/VillaNumberAPI")]
     [ApiController]
     [ApiVersion("1.0")]
+    [ApiVersion("2.0")]
     public class VillaNumberAPIController : ControllerBase
     {
         protected readonly APIResponse _response;
@@ -29,12 +30,13 @@ namespace MagicVilla_VillaAPI.Controllers
         }
 
         [HttpGet]
+        [MapToApiVersion("1.0")]
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<APIResponse>> GetVillaNumbers()
         {
             try
             {
-                IEnumerable<VillaNumber> villaNumberList = await _villaNumberRepository.GetAllAsync(includeProperties:"Villa");
+                IEnumerable<VillaNumber> villaNumberList = await _villaNumberRepository.GetAllAsync(includeProperties: "Villa");
                 _response.Result = _mapper.Map<List<VillaNumberDTO>>(villaNumberList);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
@@ -46,6 +48,15 @@ namespace MagicVilla_VillaAPI.Controllers
             }
             return _response;
         }
+
+        [HttpGet]
+        [MapToApiVersion("2.0")]
+        public IEnumerable<string> Get()
+        {
+            return new string[] { "value1", "value2" };
+        }
+
+
 
         [HttpGet("{id:int}", Name = "GetVillaNumber")]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -60,7 +71,7 @@ namespace MagicVilla_VillaAPI.Controllers
                     _response.StatusCode = HttpStatusCode.BadRequest;
                     return BadRequest(_response);
                 }
-                var villaNumber = await _villaNumberRepository.GetAsync(u => u.VillaNo == id,includeProperties:"Villa");
+                var villaNumber = await _villaNumberRepository.GetAsync(u => u.VillaNo == id, includeProperties: "Villa");
                 if (villaNumber == null)
                 {
                     _response.StatusCode = HttpStatusCode.NotFound;
