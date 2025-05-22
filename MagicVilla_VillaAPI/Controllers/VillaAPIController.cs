@@ -10,8 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 namespace MagicVilla_VillaAPI.Controllers
 {
     //[Route("api/[controller]")]
-    [Route("api/VillaAPI")]
+    [Route("api/v{version:apiVersion}/VillaAPI")]
     [ApiController]
+    [ApiVersion("1.0")]
     public class VillaAPIController : ControllerBase
     {
         protected readonly APIResponse _response;
