@@ -27,6 +27,7 @@ namespace MagicVilla_VillaAPI.Controllers.v1
         }
 
         [HttpGet]
+        [ResponseCache(Duration = 30)]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
@@ -48,6 +49,7 @@ namespace MagicVilla_VillaAPI.Controllers.v1
         }
 
         [HttpGet("{id:int}", Name = "GetVilla")]
+        //[ResponseCache(Location = ResponseCacheLocation.None,NoStore = true)]
         [Authorize(Roles = "admin")]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
