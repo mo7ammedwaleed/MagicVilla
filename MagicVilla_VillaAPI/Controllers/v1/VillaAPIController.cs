@@ -31,11 +31,19 @@ namespace MagicVilla_VillaAPI.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<APIResponse>> GetVillas()
+        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name = "FilterOccupancy")] int? occupancy)
         {
             try
             {
-                IEnumerable<Villa> villaList = await _villaRepository.GetAllAsync();
+                IEnumerable<Villa> villaList;
+                if (occupancy > 0)
+                {
+                    villaList = await _villaRepository.GetAllAsync(u => u.Occupancy == occupancy);
+                }
+                else
+                {
+                    villaList = await _villaRepository.GetAllAsync();
+                }
                 _response.Result = _mapper.Map<List<VillaDTO>>(villaList);
                 _response.StatusCode = HttpStatusCode.OK;
                 return Ok(_response);
