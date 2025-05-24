@@ -105,6 +105,18 @@ builder.Services.AddSwaggerGen(options =>
             Url = new Uri("https://example.com/license")
         }
     });
+    options.SwaggerDoc("v2", new OpenApiInfo
+    {
+        Title = "Magic Villa",
+        Version = "v2",
+        Description = "API To Manage Villa",
+        TermsOfService = new Uri("https://example.com/terms"),
+        License = new OpenApiLicense
+        {
+            Name = "Example License",
+            Url = new Uri("https://example.com/license")
+        }
+    });
 });
 
 var app = builder.Build();
@@ -116,6 +128,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI(options =>
     {
         options.SwaggerEndpoint("/swagger/v1/swagger.json", "Magic Villa V1");
+        options.SwaggerEndpoint("/swagger/v2/swagger.json", "Magic Villa V2");
     });
 }
 
