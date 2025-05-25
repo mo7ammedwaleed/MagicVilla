@@ -31,18 +31,20 @@ namespace MagicVilla_VillaAPI.Controllers.v1
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
-        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name = "FilterOccupancy")] int? occupancy, [FromQuery] string? search)
+        public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name = "FilterOccupancy")] int? occupancy, [FromQuery] string? search,
+            int pageSize = 2, int pageNumber = 1)
         {
             try
             {
                 IEnumerable<Villa> villaList;
                 if (occupancy > 0)
                 {
-                    villaList = await _villaRepository.GetAllAsync(u => u.Occupancy == occupancy);
+                    villaList = await _villaRepository.GetAllAsync(u => u.Occupancy == occupancy,
+                        pageSize:pageSize, pageNumber:pageNumber);
                 }
                 else
                 {
-                    villaList = await _villaRepository.GetAllAsync();
+                    villaList = await _villaRepository.GetAllAsync(pageSize: pageSize, pageNumber: pageNumber);
                 }
                 if (!string.IsNullOrEmpty(search))
                 {
