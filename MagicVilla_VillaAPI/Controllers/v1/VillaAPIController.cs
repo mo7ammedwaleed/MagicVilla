@@ -33,7 +33,7 @@ namespace MagicVilla_VillaAPI.Controllers.v1
         [ProducesResponseType(StatusCodes.Status403Forbidden)]
         [ProducesResponseType(StatusCodes.Status401Unauthorized)]
         public async Task<ActionResult<APIResponse>> GetVillas([FromQuery(Name = "FilterOccupancy")] int? occupancy, [FromQuery] string? search,
-            int pageSize = 2, int pageNumber = 1)
+            int pageSize = 0, int pageNumber = 1)
         {
             try
             {
